@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>올팍 스마트 플로우 (Olpark Smart Flow) — 한국체육산업개발 공공데이터 혼잡예측·분산 안내</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="logo-mark" aria-hidden="true">OP</div>
+      <div>
+        <div class="title-row">
+          <h1>올팍 스마트 플로우 <span class="en-sub">Olpark Smart Flow</span></h1>
+          <span class="badge-gov">한국체육산업개발(주) 공공데이터 4종 + 기상·교통 융합</span>
+          <span id="live-api-pill" class="badge-live">실시간 주차 API 연동중 · 1,581 / 2,600면 (60.8%)</span>
+        </div>
+        <p class="subtitle">공연 대관 · 방이동 기상예보 · 실시간 입출차 데이터를 결합한 올림픽공원 방문객 혼잡도 예측 및 우회 주차·환승 내비게이터</p>
+      </div>
+    </div>
+
+    <div class="preset-bar">
+      <span class="preset-label">대표 혼잡 시나리오</span>
+      <button type="button" class="preset-btn active" data-preset="mega">토요일 KSPO DOME + 핸드볼 우천 피크</button>
+      <button type="button" class="preset-btn" data-preset="festival">일요일 88잔디마당 가을 페스티벌</button>
+      <button type="button" class="preset-btn" data-preset="musical">평일 저녁 우리금융아트홀 뮤지컬</button>
+    </div>
+  </header>
+
+  <main class="grid-main">
+    <!-- 좌측: 방문 조건·공연 선택 및 요금/알림 계산기 -->
+    <section class="card panel-left">
+      <div class="card-head">
+        <h2>1. 방문 일정 · 동시 공연 · 기상 설정</h2>
+        <span class="tag-step">실시간 시뮬레이션</span>
+      </div>
+
+      <label class="field-block">
+        <span class="field-label">나의 방문 목적지 공연장</span>
+        <select id="target-venue">
+          <option value="kspo_dome">KSPO DOME (체조경기장 · 15,000석)</option>
+          <option value="handball">핸드볼경기장 (티켓링크 라이브 아레나 · 5,003석)</option>
+          <option value="olympic_hall">올림픽홀 (대공연장 · 2,454석)</option>
+          <option value="woori_art">우리금융아트홀 (뮤지컬 · 1,184석)</option>
+          <option value="grass_88">88잔디마당 (야외 페스티벌 · 10,000명)</option>
+        </select>
+      </label>
+
+      <div class="field-block">
+        <span class="field-label">당일 공원 내 동시 개최 대관·공연 (중첩 선택)</span>
+        <div class="venue-checks" id="active-venues-box">
+          <label><input type="checkbox" value="kspo_dome" checked /> <span>KSPO DOME (15,000석)</span></label>
+          <label><input type="checkbox" value="handball" checked /> <span>핸드볼경기장 (5,003석)</span></label>
+          <label><input type="checkbox" value="olympic_hall" /> <span>올림픽홀 (2,454석)</span></label>
+          <label><input type="checkbox" value="woori_art" /> <span>우리금융아트홀 (1,184석)</span></label>
+          <label><input type="checkbox" value="grass_88" /> <span>88잔디마당 (10,000명)</span></label>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <label class="field-block">
+          <span class="field-label">공연 시작 시각</span>
+          <select id="show-hour">
+            <option value="14">14:00 (낮 공연)</option>
+            <option value="17">17:00 (초저녁)</option>
+            <option value="18" selected>18:00 (저녁 피크)</option>
+            <option value="19">19:00 (심야 종연)</option>
+            <option value="20">20:00 (야간 공연)</option>
+          </select>
+        </label>
+        <label class="field-block">
+          <span class="field-label">요일 구분</span>
+          <select id="day-type">
+            <option value="saturday" selected>토요일 (주말 피크)</option>
+            <option value="sunday">일요일 / 공휴일</option>
+            <option value="weekday">평일 (월~금)</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="field-block">
+        <span class="field-label">기상청 송파구 방이동(nx=62, ny=126) 날씨 조건</span>
+        <select id="weather-select">
+          <option value="clear">맑음 · 쾌청 (자가용 기본 탄력 ×1.00)</option>
+          <option value="rain_snow" selected>우천 · 강설 예보 (자가용 집중 탄력 ×1.24)</option>
+          <option value="extreme_temp">한파 · 폭염 특보 (자가용 전환 탄력 ×1.14)</option>
+        </select>
+      </label>
+
+      <div class="fee-box">
+        <div class="card-head compact">
+          <h3>공식 주차요금 &amp; 50% 감면 계산기</h3>
+          <span class="mono-sm">10분당 600원 · 일 최대 20,000원</span>
+        </div>
+        <div class="two-col">
+          <label class="field-block">
+            <span class="field-label">예상 체류 시간</span>
+            <select id="stay-mins">
+              <option value="120">2시간 (120분)</option>
+              <option value="240" selected>4시간 (공연 관람 · 240분)</option>
+              <option value="360">6시간 (MD 대기 포함 · 360분)</option>
+            </select>
+          </label>
+          <label class="field-block">
+            <span class="field-label">감면 대상 여부</span>
+            <select id="discount-flag">
+              <option value="0">일반 소형차 (할인 없음)</option>
+              <option value="1" selected>경차·저공해·다자녀·장애인 (50%)</option>
+            </select>
+          </label>
+        </div>
+        <div class="fee-result" id="fee-output">예상 주차요금: <strong>7,200원</strong> (정상가 14,400원 대비 7,200원 감면)</div>
+      </div>
+
+      <button type="button" id="download-ics-btn" class="btn-ics">📅 티켓/방문 추천 출발시각 캘린더(.ics) 알림 저장</button>
+    </section>
+
+    <!-- 중앙: 올림픽공원 디지털 트윈 분산 지도 및 추천 경로 -->
+    <section class="card panel-center">
+      <div class="card-head">
+        <div>
+          <h2>2. 올림픽공원 구역별(P1~P7) 만차 예측 &amp; 최적 분산 동선</h2>
+          <p class="sub-caption" id="map-status-line">인접 소규모 주차장 조기 만차 시 대형 여유구역(P1·P2) 및 지하철 5·8·9호선 최단 출구를 안내합니다.</p>
+        </div>
+        <span id="peak-alert-badge" class="alert-pill danger">피크 점유율 94.2% (만차위험)</span>
+      </div>
+
+      <div class="map-frame">
+        <svg id="olpark-map" viewBox="0 0 680 410" aria-label="올림픽공원 주차장 및 공연장 분산 안내도"></svg>
+      </div>
+
+      <div class="route-compare-grid" id="route-cards"></div>
+    </section>
+
+    <!-- 우측: 시간대별 입출차 혼잡 곡선 & 심야 게이트 통제 알림 & 공공데이터 명세 -->
+    <section class="card panel-right">
+      <div class="card-head">
+        <div>
+          <h2>3. 시간대별(06~24시) 입출차 혼잡 예측 &amp; 출차 병목</h2>
+          <p class="sub-caption">공연 시작 90분 전 입차 집중 및 종연 직후 출차 대기시간 시뮬레이션</p>
+        </div>
+      </div>
+
+      <div class="chart-box">
+        <svg id="hourly-chart" viewBox="0 0 420 185" aria-label="시간대별 주차 점유율 차트"></svg>
+      </div>
+
+      <div class="gate-notice-box" id="gate-warning-box"></div>
+
+      <div class="upcoming-box">
+        <div class="card-head compact">
+          <h3>다가오는 대관·공연 혼잡 예보 &amp; 티켓 알림</h3>
+          <span class="mono-sm">대관정보 API 연계</span>
+        </div>
+        <div id="schedule-list" class="schedule-list"></div>
+      </div>
+
+      <div class="dataset-footer">
+        <strong>연계 공공데이터 (data.go.kr / ksponco.or.kr)</strong>
+        <ul>
+          <li>한국체육산업개발(주)_올림픽공원 실시간 주차현황 (pubData/64)</li>
+          <li>한국체육산업개발(주)_2025 차량입출차·공연·날씨 연계 데이터 (276130)</li>
+          <li>한국체육산업개발(주)_올림픽공원 대관정보 (15015212) · 운영현황 (3074924)</li>
+          <li>기상청_단기예보 (15084084) · 서울교통공사 5·8·9호선 환승 출구 정보</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
