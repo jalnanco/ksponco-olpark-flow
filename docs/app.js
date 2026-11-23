@@ -15,8 +15,8 @@
       subway: "올림픽공원역 3·4번 (5·9호선)",
       walkAlt: 9,
       walkSub: 6,
-      x: 418,
-      y: 252,
+      x: 388,
+      y: 220,
     },
     handball: {
       name: "핸드볼경기장",
@@ -28,8 +28,8 @@
       subway: "올림픽공원역 3번 (5·9호선)",
       walkAlt: 8,
       walkSub: 7,
-      x: 342,
-      y: 304,
+      x: 328,
+      y: 278,
     },
     olympic_hall: {
       name: "올림픽홀",
@@ -41,8 +41,8 @@
       subway: "올림픽공원역 3번 (5·9호선)",
       walkAlt: 6,
       walkSub: 5,
-      x: 505,
-      y: 222,
+      x: 492,
+      y: 196,
     },
     woori_art: {
       name: "우리금융아트홀",
@@ -54,8 +54,8 @@
       subway: "한성백제역 2번 (9호선)",
       walkAlt: 7,
       walkSub: 8,
-      x: 245,
-      y: 318,
+      x: 222,
+      y: 276,
     },
     grass_88: {
       name: "88잔디마당",
@@ -67,30 +67,30 @@
       subway: "몽촌토성역 1번 (8호선)",
       walkAlt: 9,
       walkSub: 9,
-      x: 288,
-      y: 176,
+      x: 260,
+      y: 178,
     },
   };
 
   const LOTS = {
-    P1: { label: "P1 대형주차장", cap: 614, x: 542, y: 132, bias: 0.76 },
-    P2: { label: "P2 올림픽홀", cap: 365, x: 546, y: 266, bias: 0.92 },
-    P4: { label: "P4 수영장", cap: 117, x: 392, y: 122, bias: 0.82 },
-    P5: { label: "P5 KSPO인접", cap: 181, x: 438, y: 192, bias: 1.22 },
-    P6: { label: "P6 핸드볼인접", cap: 167, x: 350, y: 356, bias: 1.18 },
-    P7: { label: "P7 아트홀인접", cap: 137, x: 225, y: 362, bias: 1.12 },
+    P1: { label: "P1 대형주차장", cap: 614, x: 534, y: 104, bias: 0.76 },
+    P2: { label: "P2 올림픽홀", cap: 365, x: 550, y: 268, bias: 0.92 },
+    P4: { label: "P4 수영장", cap: 117, x: 356, y: 92, bias: 0.82 },
+    P5: { label: "P5 KSPO인접", cap: 181, x: 414, y: 146, bias: 1.22 },
+    P6: { label: "P6 핸드볼인접", cap: 167, x: 426, y: 348, bias: 1.18 },
+    P7: { label: "P7 아트홀인접", cap: 137, x: 220, y: 356, bias: 1.12 },
   };
 
   const GATES = [
-    { name: "동2문 (24h 출차)", x: 618, y: 196, is24h: true },
-    { name: "북2문 (~22:30)", x: 345, y: 66, is24h: false },
-    { name: "남2문 (~22:30)", x: 295, y: 388, is24h: false },
+    { name: "동2문 (24h 출차)", x: 598, y: 186, is24h: true },
+    { name: "북2문 (~22:30)", x: 332, y: 38, is24h: false },
+    { name: "남2문 (~22:30)", x: 332, y: 398, is24h: false },
   ];
 
   const SUBWAYS = [
-    { name: "올림픽공원역 (5·9호선)", x: 602, y: 302 },
-    { name: "몽촌토성역 (8호선)", x: 96, y: 175 },
-    { name: "한성백제역 (9호선)", x: 142, y: 334 },
+    { name: "올림픽공원역 (5·9호선)", x: 576, y: 348 },
+    { name: "몽촌토성역 (8호선)", x: 96, y: 190 },
+    { name: "한성백제역 (9호선)", x: 100, y: 326 },
   ];
 
   const UPCOMING_SHOWS = [
@@ -210,10 +210,13 @@
         const isTarget = k === targetKey;
         const isOn = active.includes(k);
         const bg = isTarget ? "#0284c7" : isOn ? "#334155" : "#94a3b8";
+        const pillW = Math.max(66, v.short.length * 11 + 14);
+        const labelY = v.y + (isTarget ? 29 : 25);
         return `
           <g>
-            <circle cx="${v.x}" cy="${v.y}" r="${isTarget ? 22 : 16}" fill="${bg}" stroke="#ffffff" stroke-width="2.5" />
-            <text x="${v.x}" y="${v.y + 34}" text-anchor="middle" fill="#0f172a" font-size="11.5" font-weight="800">${v.short}</text>
+            <circle cx="${v.x}" cy="${v.y}" r="${isTarget ? 18 : 14}" fill="${bg}" stroke="#ffffff" stroke-width="2.5" />
+            <rect x="${(v.x - pillW / 2).toFixed(1)}" y="${labelY - 11}" width="${pillW}" height="16" rx="5" fill="rgba(255,255,255,0.92)" stroke="#cbd5e1" stroke-width="1" />
+            <text x="${v.x}" y="${labelY + 1}" text-anchor="middle" fill="#0f172a" font-size="10.5" font-weight="800">${v.short}</text>
           </g>
         `;
       })
@@ -230,7 +233,7 @@
     const subwaysHtml = SUBWAYS.map(
       (s) => `
       <g>
-        <rect x="${s.x - 58}" y="${s.y - 13}" width="116" height="26" rx="6" fill="#1d4ed8" stroke="#ffffff" stroke-width="1.5" />
+        <rect x="${s.x - 62}" y="${s.y - 13}" width="124" height="26" rx="6" fill="#1d4ed8" stroke="#ffffff" stroke-width="1.5" />
         <text x="${s.x}" y="${s.y + 4}" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">🚇 ${s.name}</text>
       </g>`
     ).join("");
@@ -246,12 +249,12 @@
       </defs>
 
       <!-- 공원 녹지 경계 및 수변 -->
-      <rect x="14" y="14" width="652" height="382" rx="22" fill="#dcefe6" stroke="#86efac" stroke-width="2" />
-      <ellipse cx="220" cy="145" rx="75" ry="34" fill="#bae6fd" opacity="0.75" />
-      <text x="220" y="149" text-anchor="middle" fill="#0369a1" font-size="11" font-weight="700">88호수 · 수변산책로</text>
+      <rect x="14" y="14" width="652" height="402" rx="22" fill="#dcefe6" stroke="#86efac" stroke-width="2" />
+      <ellipse cx="192" cy="104" rx="66" ry="28" fill="#bae6fd" opacity="0.78" />
+      <text x="192" y="108" text-anchor="middle" fill="#0369a1" font-size="10.5" font-weight="700">88호수 · 수변산책로</text>
 
       <!-- 내부 순환 도로망 -->
-      <path d="M 345 78 L 542 132 L 546 266 L 350 356 L 225 362 L 160 250 Z" fill="none" stroke="#ffffff" stroke-width="9" stroke-linejoin="round" opacity="0.85" />
+      <path d="M 332 50 L 534 104 L 550 268 L 426 348 L 220 356 L 160 250 Z" fill="none" stroke="#ffffff" stroke-width="9" stroke-linejoin="round" opacity="0.85" />
 
       <!-- 인접 만차 주의 점선 vs 우회 추천 실선 vs 지하철 도보 동선 -->
       <line x1="${nearLot.x}" y1="${nearLot.y}" x2="${tv.x}" y2="${tv.y}" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="4,4" />
@@ -295,9 +298,9 @@
     const svg = document.getElementById("hourly-chart");
     const w = 420;
     const h = 185;
-    const x0 = 38;
-    const x1 = w - 16;
-    const y0 = 20;
+    const x0 = 40;
+    const x1 = w - 20;
+    const y0 = 26;
     const y1 = h - 28;
 
     const pts = series.map((r, i) => {
@@ -311,16 +314,19 @@
     const dangerY = y1 - 0.85 * (y1 - y0);
 
     const showPt = pts.find((p) => p.r.hr === showHour) || pts[10];
+    const showLabelX = Math.min(x1 - 44, Math.max(x0 + 44, showPt.x));
 
     svg.innerHTML = `
       <line x1="${x0}" y1="${dangerY.toFixed(1)}" x2="${x1}" y2="${dangerY.toFixed(1)}" stroke="#f43f5e" stroke-dasharray="4,3" stroke-width="1.2" />
-      <text x="${x1 - 2}" y="${(dangerY - 4).toFixed(1)}" text-anchor="end" fill="#fda4af" font-size="9.5" font-family="JetBrains Mono">85% 만차임계선</text>
+      <rect x="${x0 + 4}" y="${(dangerY - 15).toFixed(1)}" width="92" height="13" rx="3" fill="#0f172a" opacity="0.9" />
+      <text x="${x0 + 8}" y="${(dangerY - 5).toFixed(1)}" text-anchor="start" fill="#fda4af" font-size="9.5" font-family="JetBrains Mono" font-weight="700">85% 만차임계선</text>
 
       <polygon points="${area}" fill="rgba(56, 189, 248, 0.18)" />
       <polyline points="${poly}" fill="none" stroke="#38bdf8" stroke-width="2.6" />
 
-      <line x1="${showPt.x.toFixed(1)}" y1="${y0}" x2="${showPt.x.toFixed(1)}" y2="${y1}" stroke="#fbbf24" stroke-dasharray="3,3" />
-      <text x="${showPt.x.toFixed(1)}" y="${y0 + 10}" text-anchor="middle" fill="#fde68a" font-size="9.5" font-weight="700">공연시작 ${showHour}:00</text>
+      <line x1="${showPt.x.toFixed(1)}" y1="${y0 - 4}" x2="${showPt.x.toFixed(1)}" y2="${y1}" stroke="#fbbf24" stroke-dasharray="3,3" />
+      <rect x="${(showLabelX - 42).toFixed(1)}" y="4" width="84" height="15" rx="4" fill="#1e293b" stroke="#fbbf24" stroke-width="0.8" />
+      <text x="${showLabelX.toFixed(1)}" y="14.5" text-anchor="middle" fill="#fde68a" font-size="9.2" font-weight="700">공연시작 ${showHour}:00</text>
 
       ${pts
         .filter((_, idx) => idx % 3 === 0 || idx === pts.length - 1)
@@ -331,7 +337,7 @@
         `
         )
         .join("")}
-      <text x="6" y="${y0 + 6}" fill="#94a3b8" font-size="9.5" font-family="JetBrains Mono">100%</text>
+      <text x="6" y="${y0 + 5}" fill="#94a3b8" font-size="9.5" font-family="JetBrains Mono">100%</text>
       <text x="12" y="${y1}" fill="#94a3b8" font-size="9.5" font-family="JetBrains Mono">0%</text>
     `;
   }
@@ -341,12 +347,12 @@
     const endHr = showHour + 3;
     if (endHr >= 21) {
       box.innerHTML = `
-        <strong>⚠️ 심야 종연(${endHr}:00 예상) 게이트 통제 &amp; 출차 병목 주의</strong>
-        올림픽공원 운영 규정상 북2문·남2문은 심야(22:30 이후) 출차가 통제될 수 있어 종연 차량이 동2문으로 집중됩니다(최대 대기 약 ${maxWait}분). 자차 이용 시 사전무인정산 후 <strong>동2문 직결 P1·P2 구역</strong>을 이용하세요.
+        <span class="gate-title">⚠️ 심야 종연(${endHr}:00 예상) 게이트 통제 &amp; 출차 병목 주의</span>
+        올림픽공원 운영 규정상 북2문·남2문은 심야(22:30 이후) 출차가 통제될 수 있어 종연 차량이 동2문으로 집중됩니다(최대 대기 약 ${maxWait}분). 자차 이용 시 사전무인정산 후 <b>동2문 직결 P1·P2 구역을 이용</b>하세요.
       `;
     } else {
       box.innerHTML = `
-        <strong>✅ 주간 종연(${endHr}:00 예상) 전 게이트 분산 출차 가능</strong>
+        <span class="gate-title">✅ 주간 종연(${endHr}:00 예상) 전 게이트 분산 출차 가능</span>
         동2문·남2문·북2문 모두 정상 운영 시간대이므로 안내된 우회 주차구역 이용 시 10분 이내 쾌적한 출차가 가능합니다.
       `;
     }

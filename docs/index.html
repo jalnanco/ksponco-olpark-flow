@@ -96,20 +96,20 @@
           <h3>공식 주차요금 &amp; 50% 감면 계산기</h3>
           <span class="mono-sm">10분당 600원 · 일 최대 20,000원</span>
         </div>
-        <div class="two-col">
-          <label class="field-block">
+        <div class="fee-stack">
+          <label class="field-block compact-field">
             <span class="field-label">예상 체류 시간</span>
             <select id="stay-mins">
-              <option value="120">2시간 (120분)</option>
+              <option value="120">2시간 (일반 관람 · 120분)</option>
               <option value="240" selected>4시간 (공연 관람 · 240분)</option>
               <option value="360">6시간 (MD 대기 포함 · 360분)</option>
             </select>
           </label>
-          <label class="field-block">
-            <span class="field-label">감면 대상 여부</span>
+          <label class="field-block compact-field">
+            <span class="field-label">감면 대상 여부 (50% 할인)</span>
             <select id="discount-flag">
-              <option value="0">일반 소형차 (할인 없음)</option>
-              <option value="1" selected>경차·저공해·다자녀·장애인 (50%)</option>
+              <option value="0">일반 소형차 (감면 해당없음)</option>
+              <option value="1" selected>경차 · 저공해 · 다자녀 · 장애인 (50% 감면)</option>
             </select>
           </label>
         </div>
@@ -130,7 +130,7 @@
       </div>
 
       <div class="map-frame">
-        <svg id="olpark-map" viewBox="0 0 680 410" aria-label="올림픽공원 주차장 및 공연장 분산 안내도"></svg>
+        <svg id="olpark-map" viewBox="0 0 680 430" aria-label="올림픽공원 주차장 및 공연장 분산 안내도"></svg>
       </div>
 
       <div class="route-compare-grid" id="route-cards"></div>
